@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WaveletLogic;
 
 namespace IPZ.BreathAnalyzer
 {
@@ -22,6 +23,9 @@ namespace IPZ.BreathAnalyzer
         public MainWindow()
         {
             InitializeComponent();
+
+            var test = new WaveletLogic.Wavelet();
+      test.wavelet_transformation();
         }
     }
 }
