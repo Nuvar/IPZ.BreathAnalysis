@@ -3,10 +3,25 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:oxy="http://oxyplot.org/wpf"
         xmlns:local="clr-namespace:IPZ.BreathAnalyzer"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="700" Width="1200">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <oxy:Plot Name="mainPlot" Grid.ColumnSpan="2">
+            <oxy:Plot.Series>
+                <oxy:LineSeries ItemsSource="{Binding}"></oxy:LineSeries>
+            </oxy:Plot.Series>
+        </oxy:Plot>
+        <local:SurfacePlotView Title="WAVE-wavelet" Grid.Row="1" Grid.Column="0" x:Name="wavelet"/>
+        <local:SurfacePlotView Grid.Row="1" Grid.Column="1" x:Name="wavelet1"/>
     </Grid>
 </Window>
