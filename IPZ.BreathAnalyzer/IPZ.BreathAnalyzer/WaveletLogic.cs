@@ -34,6 +34,13 @@ namespace WaveletLogic
             return -1 / Math.Sqrt(T) * (Math.Pow(t, 2) - 1) * Math.Exp(-Math.Pow(t, 2) / 2);
         }
 
+        // Вейвлет Пуассона
+        // https://en.wikipedia.org/wiki/Poisson_wavelet
+        public double POISSON_wavelet(double t, int T)
+        {
+            return 1 / Math.PI * ((1 - Math.Pow(t, 2) / Math.Pow(1 + Math.Pow(t, 2), 2)));
+        }
+
         /// <summary>
         /// amplitude or any signal representation as the returned result will work 
         /// </summary>
