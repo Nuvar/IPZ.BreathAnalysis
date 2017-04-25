@@ -47,14 +47,14 @@ namespace WaveletLogic
         // https://en.wikipedia.org/wiki/Poisson_wavelet
         public double POISSON_wavelet(double t, int T)
         {
-            return 1 / Math.PI * ((1 - Math.Pow(t, 2) / Math.Pow(1 + Math.Pow(t, 2), 2)));
+            return -1/Math.Sqrt(T)*Math.Abs(t)*Math.Exp(-Math.Abs(t));
         }
 
         //Вейвлет Хаара
         //https://en.wikipedia.org/wiki/Haar_wavelet
         public double HAAR_wavelet(double t, int T)
         {
-            double result = null;
+            double result = 0;
             if (t >= 0 && t < 0.5)
             {
                 result = 1;
@@ -70,14 +70,14 @@ namespace WaveletLogic
 
         public double FrenchHat_wavelet(double t, int T)
         {
-            double result = null;
+            double result = 0;
             
             if (Math.Abs(t) <= 1/3)
             {
                 result = 1;
             } else if (Math.Abs(t) > 1/3 && t <= 1)
             {
-                result = -1/2;
+                result = -0.5;
             } else if (Math.Abs(t) > 1)
             {
                 result = 0;

@@ -79,5 +79,20 @@ namespace IPZ.BreathAnalyzer
         {
             RenderWavelet(test.Morlet_wavelet);
         }
+
+        private void Poisson_selected(object sender, RoutedEventArgs e)
+        {
+            RenderWavelet(test.POISSON_wavelet);
+        }
+
+        private void FHAT_selected(object sender, RoutedEventArgs e)
+        {
+            RenderWavelet(test.FHAT_wavelet);
+        }
+
+        private void HAAR_selected(object sender, RoutedEventArgs e)
+        {
+            RenderWavelet(test.HAAR_wavelet);
+        }
     }
 }

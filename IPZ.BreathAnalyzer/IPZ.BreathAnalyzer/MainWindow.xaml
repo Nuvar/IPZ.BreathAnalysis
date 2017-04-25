@@ -24,7 +24,9 @@
                 <ComboBoxItem Content="WAVE wavelet" Selected="WAVE_selected"/>
                 <ComboBoxItem Content="Mexican Hat wavelet" Selected="MHAT_selected"/>
                 <ComboBoxItem Content="Morlet wavelet" Selected="Morlet_selected"/>
-                <ComboBoxItem Content="Paussian wavelet"/>
+                <ComboBoxItem Content="Poisson wavelet" Selected="Poisson_selected"/>
+                <ComboBoxItem Content="Haar wavelet" Selected="HAAR_selected"/>
+                <ComboBoxItem Content="French Hat wavelet" Selected="FHAT_selected"/>
             </ComboBox>
         </StackPanel>
         <oxy:Plot Name="mainPlot" Grid.Column="1" Grid.Row="0">
