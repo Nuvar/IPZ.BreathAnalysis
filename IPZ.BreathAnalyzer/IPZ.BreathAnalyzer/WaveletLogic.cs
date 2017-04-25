@@ -40,6 +40,24 @@ namespace WaveletLogic
         {
             return 1 / Math.PI * ((1 - Math.Pow(t, 2) / Math.Pow(1 + Math.Pow(t, 2), 2)));
         }
+		
+		//Вейвлет Хаара
+		//https://en.wikipedia.org/wiki/Haar_wavelet
+		public double HAAR_wavelet(double t, int T)
+        {
+            double result = null;
+			if (t >= 0 && t < 0.5)
+			{
+				result = 1;
+			} else if (t >= 0.5 && t < 1)
+			{
+				result = -1;
+			} else if (t < 0 || t >= 1)
+			{
+				result = 0;
+			}
+			return result;
+        }
 
         /// <summary>
         /// amplitude or any signal representation as the returned result will work 
