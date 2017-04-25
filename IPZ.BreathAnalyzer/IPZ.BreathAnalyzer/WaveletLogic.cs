@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Documents;
 using System.Windows.Media.Media3D;
+using System.Numerics;
 
 namespace WaveletLogic
 {
@@ -31,7 +32,15 @@ namespace WaveletLogic
         //Вейвлет "Мексиканская шляпа"
         public double FHAT_wavelet(double t, int T)
         {
-            return -1 / Math.Sqrt(T) * (Math.Pow(t, 2) - 1) * Math.Exp(-Math.Pow(t, 2) / 2);
+            return -1 / Math.Sqrt(T) * (1 - Math.Pow(t, 2)) * Math.Exp(-Math.Pow(t, 2) / 2);
+        }
+
+        public double Morlet_wavelet(double t, int T)
+        {
+            const double d = 10.0;
+            double k = Math.Pow(Math.E, -d*d/2.0);
+            double c = 1/Math.Sqrt(1 + Math.Exp(-d*d) - 2*Math.Exp(-(3/4.0)*d*d));
+            return c*Math.Pow(Math.PI, -0.25)*(Math.Exp(-0.5*Math.Pow(d - t, 2)) - k* Math.Exp(-0.5*d*d));
         }
 
         /// <summary>

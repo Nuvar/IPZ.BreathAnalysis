@@ -24,51 +24,60 @@ namespace IPZ.BreathAnalyzer
     /// </summary>
     public partial class MainWindow : Window
     {
+        double fr = 1.0 / 44000;
+        double ms = 0.001;
+        private int step = 44;
+        private int duration = 0;
+        private short[] signal = new short[0];
+        private Wavelet test = new WaveletLogic.Wavelet();
+        private SurfacePlotModel myPlot = new SurfacePlotModel();
         public MainWindow()
         {
             InitializeComponent();
-
-            var test = new WaveletLogic.Wavelet();
+            
             using (WaveFileReader reader = new WaveFileReader("sample.wav"))
             {
                 byte[] buffer = new byte[reader.Length];
                 int read = reader.Read(buffer, 0, buffer.Length);
-                short[] sampleBuffer = new short[read / 2];
-                Buffer.BlockCopy(buffer, 0, sampleBuffer, 0, read);
+                signal = new short[read / 2];
+                Buffer.BlockCopy(buffer, 0, signal, 0, read);
+                duration = (int)reader.TotalTime.TotalMilliseconds;
                 var points = new List<DataPoint>();
-                Func<double, int, double> blackman = (x, y) =>
-                {
-                    return 0.54 - 0.46 * Math.Cos(2.0 * Math.PI * x / 99);
-                };
-                double fr = 1.0/44000;
-                double ms = 0.001;
-                int step = (int) (ms/fr);
+                wavelet.DataContext = myPlot;
                 for (int i = 0; i < reader.TotalTime.Milliseconds; i++)
                 {
-                    points.Add(new DataPoint(Convert.ToDouble(i), Convert.ToDouble(sampleBuffer[i*step])));
+                    points.Add(new DataPoint(Convert.ToDouble(i), Convert.ToDouble(signal[i*step])));
                 }
 
                 mainPlot.DataContext = points;
-
-                var myPlot = new SurfacePlotModel();
-                var myPlot1 = new SurfacePlotModel();
-                wavelet.DataContext = myPlot;
-                wavelet1.DataContext = myPlot1;
-                var res = test.wavelet_transformation((int)reader.TotalTime.TotalMilliseconds, sampleBuffer, step, test.WAVE_wavelet, 100);
-                var res1 = test.wavelet_transformation((int)reader.TotalTime.TotalMilliseconds, sampleBuffer, step, test.FHAT_wavelet, 100);
-                double[,] arr = new double[(int)res.Max(f => f.X) + 1, (int)res.Max(f => f.Y) + 1];
-                double[,] arr1 = new double[(int)res1.Max(f => f.X) + 1, (int)res1.Max(f => f.Y) + 1];
-                foreach (Point3D point3D in res)
-                {
-                    arr[(int)point3D.X, (int)point3D.Y] = point3D.Z;
-                }
-                foreach (Point3D point3D in res1)
-                {
-                    arr1[(int)point3D.X, (int)point3D.Y] = point3D.Z;
-                }
-                myPlot.PlotFunction((x, y) => arr[(int)x, (int)y], res.Select(r => r.X).ToArray(), res.Select(r => r.Y).ToArray());
-                myPlot1.PlotFunction((x, y) => arr1[(int)x, (int)y], res1.Select(r => r.X).ToArray(), res1.Select(r => r.Y).ToArray());
             }
+        }
+
+        private void RenderWavelet(Func<double,int,double> func)
+        {
+            var res = test.wavelet_transformation(duration, signal, step,
+                func, 100);
+            double[,] arr = new double[(int) res.Max(f => f.X) + 1, (int) res.Max(f => f.Y) + 1];
+            foreach (Point3D point3D in res)
+            {
+                arr[(int) point3D.X, (int) point3D.Y] = point3D.Z;
+            }
+            myPlot.PlotFunction((x, y) => arr[(int) x, (int) y], res.Select(r => r.X).ToArray(), res.Select(r => r.Y).ToArray());
+        }
+
+        private void WAVE_selected(object sender, RoutedEventArgs e)
+        {
+            RenderWavelet(test.WAVE_wavelet);
+        }
+
+        private void MHAT_selected(object sender, RoutedEventArgs e)
+        {
+            RenderWavelet(test.FHAT_wavelet);
+        }
+
+        private void Morlet_selected(object sender, RoutedEventArgs e)
+        {
+            RenderWavelet(test.Morlet_wavelet);
         }
     }
 }
