@@ -35,7 +35,7 @@ namespace IPZ.BreathAnalyzer
         {
             InitializeComponent();
             
-            using (WaveFileReader reader = new WaveFileReader("sample.wav"))
+            using (WaveFileReader reader = new WaveFileReader("../../../samples/scream.wav"))
             {
                 byte[] buffer = new byte[reader.Length];
                 int read = reader.Read(buffer, 0, buffer.Length);
