@@ -17,10 +17,10 @@
             <ColumnDefinition Width="70*"/>
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Row="0" Grid.Column="0">
-            <TextBlock Text="Current File" HorizontalAlignment="Center"/>
-            <Button Content="Load new file" HorizontalAlignment="Center" Padding="10,3"/>
+            <TextBlock Text="No file loaded" HorizontalAlignment="Center" Name="fileTitle"/>
+            <Button Content="Load new file" HorizontalAlignment="Center" Padding="10,3" Click="OnFileLoadClick"/>
             <Label Content="Wavelet type"/>
-            <ComboBox Margin="5,5" >
+            <ComboBox Margin="5,5" IsEnabled="False" Name="waveletBox">
                 <ComboBoxItem Content="WAVE wavelet" Selected="WAVE_selected"/>
                 <ComboBoxItem Content="Mexican Hat wavelet" Selected="MHAT_selected"/>
                 <ComboBoxItem Content="Morlet wavelet" Selected="Morlet_selected"/>

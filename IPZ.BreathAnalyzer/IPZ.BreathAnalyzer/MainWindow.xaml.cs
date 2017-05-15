@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Microsoft.Win32;
 using NAudio.Dsp;
 using NAudio.Wave;
 using OxyPlot;
@@ -34,16 +35,35 @@ namespace IPZ.BreathAnalyzer
         public MainWindow()
         {
             InitializeComponent();
-            
-            using (WaveFileReader reader = new WaveFileReader("sample.wav"))
+            wavelet.DataContext = myPlot;
+        }
+
+        private void OnFileLoadClick(object sender, RoutedEventArgs e)
+        {
+            var dialog = new OpenFileDialog();
+            dialog.Filter = "WAV files (*.wav)|*.wav";
+            dialog.Multiselect = false;
+            dialog.CheckFileExists = true;
+            dialog.CheckPathExists = true;
+            if (dialog.ShowDialog() == true)
+            {
+                LoadSample(dialog.FileName);
+                fileTitle.Text = System.IO.Path.GetFileName(dialog.FileName);
+                waveletBox.IsEnabled = true;
+            }
+        }
+
+        private void LoadSample(string path)
+        {
+            using (WaveFileReader reader = new WaveFileReader(path))
             {
                 byte[] buffer = new byte[reader.Length];
                 int read = reader.Read(buffer, 0, buffer.Length);
-                signal = new short[read / 2];
+                signal = new short[read/2];
                 Buffer.BlockCopy(buffer, 0, signal, 0, read);
-                duration = (int)reader.TotalTime.TotalMilliseconds;
+                duration = (int) reader.TotalTime.TotalMilliseconds;
                 var points = new List<DataPoint>();
-                wavelet.DataContext = myPlot;
+
                 for (int i = 0; i < reader.TotalTime.Milliseconds; i++)
                 {
                     points.Add(new DataPoint(Convert.ToDouble(i), Convert.ToDouble(signal[i*step])));

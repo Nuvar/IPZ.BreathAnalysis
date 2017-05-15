@@ -72,10 +72,10 @@ namespace WaveletLogic
         {
             double result = 0;
             
-            if (Math.Abs(t) <= 1/3)
+            if (Math.Abs(t) <= (double)1/3)
             {
                 result = 1;
-            } else if (Math.Abs(t) > 1/3 && t <= 1)
+            } else if (Math.Abs(t) > (double)1 /3 && t <= 1)
             {
                 result = -0.5;
             } else if (Math.Abs(t) > 1)
