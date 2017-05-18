@@ -126,8 +126,8 @@ namespace IPZ.BreathAnalyzer
         private Model3DGroup CreateModel()
         {
             var newModelGroup = new Model3DGroup();
-            double lineThickness = 0.01;
-            double axesOffset = 0.05;
+            double lineThickness = 0.5;
+            double axesOffset = 0.5;
 
             // Get relevant constaints from the DataPoints object
             int numberOfRows = DataPoints.GetUpperBound(0) + 1;
@@ -278,16 +278,16 @@ namespace IPZ.BreathAnalyzer
 
             // Add axes labels
             BillboardTextVisual3D xLabel = new BillboardTextVisual3D();
-            xLabel.Text = "X Axis";
-            xLabel.Position = new Point3D((maxX - minX) / 2, minY - 3 * axesOffset, minZ - 5 * axesOffset);
+            xLabel.Text = "X Axis - Time";
+            xLabel.Position = new Point3D((maxX - minX) / 2, minY - 5, minZ - 5);
             axesLabelsModel.Children.Add(xLabel);
             BillboardTextVisual3D yLabel = new BillboardTextVisual3D();
-            yLabel.Text = "Y Axis";
-            yLabel.Position = new Point3D(minX - 3 * axesOffset, (maxY - minY) / 2, minZ - 5 * axesOffset);
+            yLabel.Text = "Y Axis - Scale";
+            yLabel.Position = new Point3D(minX - 5, (maxY - minY) / 2, minZ - 5);
             axesLabelsModel.Children.Add(yLabel);
             BillboardTextVisual3D zLabel = new BillboardTextVisual3D();
-            zLabel.Text = "Z Axis";
-            zLabel.Position = new Point3D(minX - 5 * axesOffset, maxY + 5 * axesOffset, 0); // Note: trying to find the midpoint of minZ, maxZ doesn't work when minZ = -0.5 and maxZ = 0.5...
+            zLabel.Text = "Z Axis - Wavelet Transform";
+            zLabel.Position = new Point3D(minX - 10, maxY + 8, 0); // Note: trying to find the midpoint of minZ, maxZ doesn't work when minZ = -0.5 and maxZ = 0.5...
             axesLabelsModel.Children.Add(zLabel);
 
             // Create models from MeshBuilders
@@ -295,7 +295,7 @@ namespace IPZ.BreathAnalyzer
             GeometryModel3D gridModel = new GeometryModel3D(gridBuilder.ToMesh(), Materials.Black);
 
             // Update model group
-            //this.Children.Add(axesLabelsModel);
+            this.Children.Add(axesLabelsModel);
             newModelGroup.Children.Add(surfaceModel);
             newModelGroup.Children.Add(surfaceMeshLinesModel);
             newModelGroup.Children.Add(gridModel);

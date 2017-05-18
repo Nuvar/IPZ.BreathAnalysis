@@ -23,6 +23,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -78,6 +79,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Window1.xaml.cs">
+      <DependentUpon>Window1.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -91,6 +95,24 @@
       <DependentUpon>SurfacePlotView.xaml</DependentUpon>
     </Compile>
     <Compile Include="SurfacePlotVisual3D.cs" />
+    <Compile Include="VisualLib\Bar3D.cs" />
+    <Compile Include="VisualLib\Chart3D.cs" />
+    <Compile Include="VisualLib\ColorMesh3D.cs" />
+    <Compile Include="VisualLib\Cone3D.cs" />
+    <Compile Include="VisualLib\Cylinder3D.cs" />
+    <Compile Include="VisualLib\Ellipse3D.cs" />
+    <Compile Include="VisualLib\Mesh3D.cs" />
+    <Compile Include="VisualLib\Model3D.cs" />
+    <Compile Include="VisualLib\Pyramid3D.cs" />
+    <Compile Include="VisualLib\ScatterChart3D.cs" />
+    <Compile Include="VisualLib\ScatterPlotItem.cs" />
+    <Compile Include="VisualLib\SurfaceChart3D.cs" />
+    <Compile Include="VisualLib\TextureMapping.cs" />
+    <Compile Include="VisualLib\TransformMatrix.cs" />
+    <Compile Include="VisualLib\Triangle3D.cs" />
+    <Compile Include="VisualLib\UniformSurfaceChart3D.cs" />
+    <Compile Include="VisualLib\Vertex3D.cs" />
+    <Compile Include="VisualLib\ViewportRect.cs" />
     <Compile Include="WaveletLogic.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -99,6 +121,10 @@
     <Page Include="SurfacePlotView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Window1.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
