@@ -7,60 +7,61 @@
         xmlns:local="clr-namespace:IPZ.BreathAnalyzer"
         mc:Ignorable="d"
         Title="MainWindow" MinHeight="800" MinWidth="1366" Height="800" Width="1366">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="30*"/>
-            <RowDefinition Height="70*"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="30*"/>
-            <ColumnDefinition Width="70*"/>
-        </Grid.ColumnDefinitions>
-        <StackPanel Grid.Row="0" Grid.Column="0">
-            <StackPanel.Resources>
-                <Style TargetType="TextBlock">
-                    <Setter Property="FontSize" Value="16"/>
-                </Style>
-            </StackPanel.Resources>
-            <TextBlock Text="No file loaded" HorizontalAlignment="Center" Name="fileTitle"/>
-            <Button Content="Load new file" HorizontalAlignment="Center" Padding="10,3" Click="OnFileLoadClick"/>
-            <Label Content="Wavelet type"/>
-            <ComboBox Margin="5,5" IsEnabled="False" Name="waveletBox">
-                <ComboBoxItem Content="WAVE wavelet" Selected="WAVE_selected"/>
-                <ComboBoxItem Content="Mexican Hat wavelet" Selected="MHAT_selected"/>
-                <ComboBoxItem Content="Morlet wavelet" Selected="Morlet_selected"/>
-                <ComboBoxItem Content="Poisson wavelet" Selected="Poisson_selected"/>
-                <ComboBoxItem Content="Haar wavelet" Selected="HAAR_selected"/>
-                <ComboBoxItem Content="French Hat wavelet" Selected="FHAT_selected"/>
-            </ComboBox>
-            <TextBlock Text="Summary"/>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Max amplitude: "/>
-                <TextBlock Name="tbЬMaxAmp"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Average amplitude: "/>
-                <TextBlock Name="tbAmp"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Smoothness index (from 0 to 1): "/>
-                <TextBlock Name="tbSmooth"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="High Amplitude count: "/>
-                <TextBlock Name="tbAmpCount"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Probable Type: "/>
-                <TextBlock Name="tbType"/>
-            </StackPanel>
-        </StackPanel>
-        <oxy:Plot Name="mainPlot" Grid.Column="1" Grid.Row="0" PlotType="XY">
-            <oxy:Plot.Series>
-                <oxy:LineSeries ItemsSource="{Binding}"></oxy:LineSeries>
-            </oxy:Plot.Series>
-        </oxy:Plot>
-        <local:SurfacePlotView Background="White" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" x:Name="wavelet"/>
-        <Button Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Top" Content="Export Image" FontSize="18" Padding="50,5" Click="Export_OnClick"/>
-    </Grid>
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="30*"/>
+      <RowDefinition Height="70*"/>
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="30*"/>
+      <ColumnDefinition Width="70*"/>
+    </Grid.ColumnDefinitions>
+    <StackPanel Grid.Row="0" Grid.Column="0">
+      <StackPanel.Resources>
+        <Style TargetType="TextBlock">
+          <Setter Property="FontSize" Value="16"/>
+        </Style>
+      </StackPanel.Resources>
+      <TextBlock Text="No file loaded" HorizontalAlignment="Center" Name="fileTitle"/>
+      <Button Content="Load new file" HorizontalAlignment="Center" Padding="10,3" Click="OnFileLoadClick"/>
+      <Label Content="Wavelet type"/>
+      <ComboBox Margin="5,5" IsEnabled="False" Name="waveletBox">
+        <ComboBoxItem Content="WAVE wavelet" Selected="WAVE_selected"/>
+        <ComboBoxItem Content="Mexican Hat wavelet" Selected="MHAT_selected"/>
+        <ComboBoxItem Content="Morlet wavelet" Selected="Morlet_selected"/>
+        <ComboBoxItem Content="Poisson wavelet" Selected="Poisson_selected"/>
+        <ComboBoxItem Content="Haar wavelet" Selected="HAAR_selected"/>
+        <ComboBoxItem Content="French Hat wavelet" Selected="FHAT_selected"/>
+      </ComboBox>
+      <TextBlock Text="Summary"/>
+      <StackPanel Orientation="Horizontal">
+        <TextBlock Text="Max amplitude: "/>
+        <TextBlock Name="tbЬMaxAmp"/>
+      </StackPanel>
+      <StackPanel Orientation="Horizontal">
+        <TextBlock Text="Average amplitude: "/>
+        <TextBlock Name="tbAmp"/>
+      </StackPanel>
+      <StackPanel Orientation="Horizontal">
+        <TextBlock Text="Smoothness index (from 0 to 1): "/>
+        <TextBlock Name="tbSmooth"/>
+      </StackPanel>
+      <StackPanel Orientation="Horizontal">
+        <TextBlock Text="High Amplitude count: "/>
+        <TextBlock Name="tbAmpCount"/>
+      </StackPanel>
+      <StackPanel Orientation="Horizontal">
+        <TextBlock Text="Probable Type: "/>
+        <TextBlock Name="tbType"/>
+      </StackPanel>
+    </StackPanel>
+    <oxy:Plot Name="mainPlot" Grid.Column="1" Grid.Row="0" PlotType="XY">
+      <oxy:Plot.Series>
+        <oxy:LineSeries ItemsSource="{Binding}"></oxy:LineSeries>
+      </oxy:Plot.Series>
+    </oxy:Plot>
+    <local:SurfacePlotView Background="White" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" x:Name="wavelet"/>
+    <Button Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Top" Content="Export Wavelet" FontSize="18" Padding="50,5" Click="Export_OnClick"/>
+    <Button Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Top" Content="Export Sample" FontSize="18" Padding="50,5" Click="ExportSample_OnClick" Margin="0,0,244,0"/>
+  </Grid>
 </Window>
