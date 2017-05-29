@@ -45,6 +45,7 @@ namespace IPZ.BreathAnalyzer
         private void OnFileLoadClick(object sender, RoutedEventArgs e)
         {
             var dialog = new OpenFileDialog();
+            dialog.InitialDirectory = System.AppDomain.CurrentDomain.BaseDirectory; // path to exe
             dialog.Filter = "WAV files (*.wav)|*.wav";
             dialog.Multiselect = false;
             dialog.CheckFileExists = true;
@@ -198,7 +199,7 @@ namespace IPZ.BreathAnalyzer
                     context.DrawRectangle(new VisualBrush(wavelet), null, new Rect(new Point(), size));
                     context.Close();
                 }
-
+                
                 result.Render(drawingvisual);
                 PngBitmapEncoder encoder = new PngBitmapEncoder();
                 encoder.Frames.Add(BitmapFrame.Create(result));
@@ -210,5 +211,39 @@ namespace IPZ.BreathAnalyzer
                 Process.Start(dialog.FileName);
             }
         }
-    }
+
+       private void ExportSample_OnClick(object sender, RoutedEventArgs e)
+       {
+           // mercy on me, im a copypastor
+           var dialog = new SaveFileDialog();
+           dialog.FileName = "export.png";
+           dialog.Filter = "Png Image (*.png)|*.png";
+           dialog.OverwritePrompt = true;
+           dialog.AddExtension = true;
+           if (dialog.ShowDialog() == true)
+           {
+             Size size = new Size(mainPlot.ActualWidth, mainPlot.ActualHeight);
+
+             RenderTargetBitmap result = new RenderTargetBitmap((int)size.Width, (int)size.Height, 96, 96, PixelFormats.Pbgra32);
+
+             DrawingVisual drawingvisual = new DrawingVisual();
+             using (DrawingContext context = drawingvisual.RenderOpen())
+             {
+               context.DrawRectangle(new VisualBrush(mainPlot), null, new Rect(new Point(), size));
+               context.Close();
+             }
+
+             result.Render(drawingvisual);
+             PngBitmapEncoder encoder = new PngBitmapEncoder();
+             encoder.Frames.Add(BitmapFrame.Create(result));
+
+             using (var file = dialog.OpenFile())
+             {
+               encoder.Save(file);
+             }
+             Process.Start(dialog.FileName);
+           }
+       }
+
+  }
 }
