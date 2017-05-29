@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -18,6 +19,8 @@ using NAudio.Dsp;
 using NAudio.Wave;
 using OxyPlot;
 using WaveletLogic;
+using Point = System.Windows.Point;
+using Size = System.Windows.Size;
 
 namespace IPZ.BreathAnalyzer
 {
@@ -177,8 +180,9 @@ namespace IPZ.BreathAnalyzer
 
         private void Export_OnClick(object sender, RoutedEventArgs e)
         {
+            //TODO Export oxyPlot
             var dialog = new SaveFileDialog();
-            dialog.FileName = "export.png";
+            dialog.FileName = $"export-{fileTitle.Text}.png";
             dialog.Filter = "Png Image (*.png)|*.png";
             dialog.OverwritePrompt = true;
             dialog.AddExtension = true;
