@@ -14,7 +14,9 @@ using System.Windows.Media.Media3D;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
+using IPZ.BreathAnalyzer;
 using NAudio.Wave;
 using OxyPlot;
 using WaveletLogic;
@@ -40,11 +42,12 @@ namespace WPFChart3D
         public int m_nRectModelIndex = -1;
 
 
-
+        
         public Window1()
         {
             InitializeComponent();
-
+            
+            
             // selection rect
             m_selectRect.SetRect(new Point(-0.5, -0.5), new Point(-0.5, -0.5));
             WPFChart3D.Model3D model3d = new WPFChart3D.Model3D();

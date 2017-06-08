@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:p="clr-namespace:System.Windows.Controls.Primitives;assembly=PresentationFramework"
         xmlns:oxy="http://oxyplot.org/wpf"
         xmlns:local="clr-namespace:IPZ.BreathAnalyzer"
         mc:Ignorable="d"
@@ -25,14 +26,7 @@
       <TextBlock Text="No file loaded" HorizontalAlignment="Center" Name="fileTitle"/>
       <Button Content="Load new file" HorizontalAlignment="Center" Padding="10,3" Click="OnFileLoadClick"/>
       <Label Content="Wavelet type"/>
-      <ComboBox Margin="5,5" IsEnabled="False" Name="waveletBox">
-        <ComboBoxItem Content="WAVE wavelet" Selected="WAVE_selected"/>
-        <ComboBoxItem Content="Mexican Hat wavelet" Selected="MHAT_selected"/>
-        <ComboBoxItem Content="Morlet wavelet" Selected="Morlet_selected"/>
-        <ComboBoxItem Content="Poisson wavelet" Selected="Poisson_selected"/>
-        <ComboBoxItem Content="Haar wavelet" Selected="HAAR_selected"/>
-        <ComboBoxItem Content="French Hat wavelet" Selected="FHAT_selected"/>
-      </ComboBox>
+            <ComboBox Margin="5,5" IsEnabled="False" Name="waveletBox" DisplayMemberPath="Name"  SelectionChanged="WaveletBox_OnSelected" ItemsSource="{Binding}"/>
       <TextBlock Text="Summary"/>
       <StackPanel Orientation="Horizontal">
         <TextBlock Text="Max amplitude: "/>
