@@ -1,7 +1,12 @@
 ﻿using System;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -13,11 +18,15 @@ using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Microsoft.CSharp;
 using Microsoft.Win32;
 using NAudio.Dsp;
 using NAudio.Wave;
 using OxyPlot;
 using WaveletLogic;
+using Expression = System.Linq.Expressions.Expression;
+using Point = System.Windows.Point;
+using Size = System.Windows.Size;
 
 namespace IPZ.BreathAnalyzer
 {
@@ -33,10 +42,57 @@ namespace IPZ.BreathAnalyzer
         private short[] signal = new short[0];
         private Wavelet test = new WaveletLogic.Wavelet();
         private SurfacePlotModel myPlot = new SurfacePlotModel { ShowMiniCoordinates = true };
+        private ObservableCollection<MotherWaveletViewModel> _wavelets;
         public MainWindow()
         {
             InitializeComponent();
             wavelet.DataContext = myPlot;
+            _wavelets = new ObservableCollection<MotherWaveletViewModel>();
+            _wavelets.Add(new MotherWaveletViewModel {Name = "WAVE wavelet", Function = test.WAVE_wavelet});
+            _wavelets.Add(new MotherWaveletViewModel {Name = "Poisson wavelet", Function = test.POISSON_wavelet});
+            _wavelets.Add(new MotherWaveletViewModel {Name = "Mexican hat wavelet", Function = test.FHAT_wavelet});
+            _wavelets.Add(new MotherWaveletViewModel {Name = "French hat wavelet", Function = test.FrenchHat_wavelet});
+            _wavelets.Add(new MotherWaveletViewModel {Name = "Morlet wavelet", Function = test.Morlet_wavelet});
+            _wavelets.Add(new MotherWaveletViewModel {Name = "Haar wavelet", Function = test.HAAR_wavelet});
+            LoadCustomWavelets();
+            waveletBox.DataContext = _wavelets;
+        }
+
+        private void LoadCustomWavelets()
+        {
+            const string FOLDER_PATH = "Custom Wavelets";
+            var provider = new CSharpCodeProvider();
+            if (Directory.Exists(FOLDER_PATH))
+            {
+                foreach (string fileName in Directory.GetFiles(FOLDER_PATH, "*.cs"))
+                {
+                    try
+                    {
+                        string name = System.IO.Path.GetFileNameWithoutExtension(fileName);
+                        string simplifiedName = name.Replace(" ", "");
+                        var results =
+                            provider.CompileAssemblyFromFile(
+                                new CompilerParameters(new[] {"System.dll", "System.Core.dll", "System.Numerics.dll"}), fileName);
+                        if (results.CompiledAssembly != null)
+                        {
+                            Type rooType = results.CompiledAssembly.GetType(simplifiedName, true);
+                            MethodInfo method = rooType.GetMethod("Wavelet", BindingFlags.Public | BindingFlags.Static);
+                            var timeParam = Expression.Parameter(typeof (double), "t");
+                            var periodParam = Expression.Parameter(typeof (int), "T");
+                            Func<double, int, double> func =
+                                Expression.Lambda<Func<double, int, double>>(Expression.Call(method, timeParam,
+                                    periodParam), timeParam, periodParam).Compile();
+                            var viewModel = new MotherWaveletViewModel {Name = name, Function = func};
+                            _wavelets.Add(viewModel);
+                        }
+
+                    }
+                    catch (Exception e)
+                    {
+                        int a = 0;
+                    }
+                }
+            }
         }
 
         private void OnFileLoadClick(object sender, RoutedEventArgs e)
@@ -178,8 +234,9 @@ namespace IPZ.BreathAnalyzer
 
         private void Export_OnClick(object sender, RoutedEventArgs e)
         {
+            //TODO Export oxyPlot
             var dialog = new SaveFileDialog();
-            dialog.FileName = "export.png";
+            dialog.FileName = $"export-{fileTitle.Text}.png";
             dialog.Filter = "Png Image (*.png)|*.png";
             dialog.OverwritePrompt = true;
             dialog.AddExtension = true;
@@ -241,5 +298,14 @@ namespace IPZ.BreathAnalyzer
            }
        }
 
-  }
+        private void WaveletBox_OnSelected(object sender, RoutedEventArgs e)
+        {
+            var control = sender as ComboBox;
+            var model = control?.SelectedItem as MotherWaveletViewModel;
+            if (model != null)
+            {
+                RenderWavelet(model.Function);
+            }
+        }
+    }
 }
